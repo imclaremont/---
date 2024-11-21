@@ -37,17 +37,17 @@ def calculate_temporal_noise(frames):
     return temporal_noise
 
 # Step 1: 이미지 디렉터리 경로 및 파일 로드
-# 분석할 이미지가 저장된 디렉터리 경로와 파일명을 정의합니다.
+# 분석할 이미지가 저장된 디렉터리 경로와 파일명 정의
 image_dir = "./image/"  # 이미지 디렉터리 경로
 num_images = 20  # 분석할 이미지 개수
 image_files = [os.path.join(image_dir, f"{i}.png") for i in range(1, num_images + 1)]  # 1.png ~ 20.png 파일 목록 생성
 
 # Step 2: 이미지 데이터를 저장할 리스트 생성
-# 각 프레임 데이터를 저장할 리스트를 초기화합니다.
+# 각 프레임 데이터를 저장할 리스트를 초기화
 frames = []
 
 # Step 3: 이미지 로드 및 Bayer 패턴 분리
-# 각 이미지를 불러와 Bayer 패턴의 Red, Green, Blue 채널로 분리합니다.
+# 각 이미지를 불러와 Bayer 패턴의 Red, Green, Blue 채널로 분리
 for file in image_files:
     # 이미지 로드
     image = cv2.imread(file, cv2.IMREAD_GRAYSCALE)  # 이미지를 흑백 모드로 로드
@@ -66,30 +66,30 @@ for file in image_files:
     })
 
 # Step 4: 전체 프레임 데이터를 numpy 배열로 변환 (Temporal Noise 계산용)
-# 다중 프레임 데이터를 채널별로 numpy 배열로 변환합니다.
+# 다중 프레임 데이터를 채널별로 numpy 배열로 변환
 red_frames = np.array([frame["red"] for frame in frames])      # Red 채널 프레임 배열
 green_frames = np.array([frame["green"] for frame in frames])  # Green 채널 프레임 배열
 blue_frames = np.array([frame["blue"] for frame in frames])    # Blue 채널 프레임 배열
 
 # Step 5: Total Noise 및 FPN 계산
-# Total Noise는 각 프레임별로 계산하여 리스트에 저장합니다.
+# Total Noise는 각 프레임별로 계산하여 리스트에 저장
 red_total_noise = [calculate_total_noise(frame["red"]) for frame in frames]
 green_total_noise = [calculate_total_noise(frame["green"]) for frame in frames]
 blue_total_noise = [calculate_total_noise(frame["blue"]) for frame in frames]
 
-# Fixed Pattern Noise(FPN)는 첫 번째 프레임을 기준으로 계산합니다.
+# Fixed Pattern Noise(FPN)는 첫 번째 프레임을 기준으로 계산
 red_fpn = calculate_fpn(red_frames[0])  # Red 채널의 FPN
 green_fpn = calculate_fpn(green_frames[0])  # Green 채널의 FPN
 blue_fpn = calculate_fpn(blue_frames[0])  # Blue 채널의 FPN
 
 # Step 6: Temporal Noise 계산
-# Temporal Noise는 모든 프레임 데이터를 사용하여 계산합니다.
+# Temporal Noise는 모든 프레임 데이터를 사용하여 계산
 red_temporal_noise = calculate_temporal_noise(red_frames)      # Red 채널의 Temporal Noise
 green_temporal_noise = calculate_temporal_noise(green_frames)  # Green 채널의 Temporal Noise
 blue_temporal_noise = calculate_temporal_noise(blue_frames)    # Blue 채널의 Temporal Noise
 
 # Step 7: 결과 출력
-# 각 채널별 Total Noise의 평균값, FPN, Temporal Noise 값을 출력합니다.
+# 각 채널별 Total Noise의 평균값, FPN, Temporal Noise 값을 출력
 print("=== Total Noise ===")
 print("Red Total Noise (avg):", np.mean(red_total_noise))  # Red 채널의 Total Noise 평균 출력
 print("Green Total Noise (avg):", np.mean(green_total_noise))  # Green 채널의 Total Noise 평균 출력
