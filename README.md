@@ -1,6 +1,6 @@
 RGB dark image
 
-파이썬으로 RGB별로 noise 추출 code 작성
+RGB별 noise 추출 파이썬 코드 작성
 
 size: 2592 x 1944(mm)
 
