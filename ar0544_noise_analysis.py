@@ -7,8 +7,8 @@ import os
 def calculate_total_noise(channel):
     """
     Total Noise 계산:
-    픽셀 값에서 전체 평균을 뺀 후, 차이를 제곱하여 평균을 내고 제곱근을 취합니다.
-    이는 채널 내 픽셀 값의 전반적인 변동성을 나타냅니다.
+    픽셀 값에서 전체 평균을 뺀 후, 차이를 제곱하여 평균을 내고 제곱근을 취한다
+    이는 채널 내 픽셀 값의 전반적인 변동성을 나타낸다
     """
     mean_pixel = np.mean(channel)  # 전체 평균값 계산
     total_noise = np.sqrt(np.mean((channel - mean_pixel) ** 2))  # 총 노이즈 계산
@@ -18,8 +18,8 @@ def calculate_total_noise(channel):
 def calculate_fpn(channel):
     """
     Fixed Pattern Noise(FPN) 계산:
-    각 열별 평균값과 전체 평균값 간의 차이를 기반으로 계산합니다.
-    이는 고정된 패턴 잡음을 측정합니다.
+    각 열별 평균값과 전체 평균값 간의 차이를 기반으로 계산한다
+    이는 고정된 패턴 잡음을 측정한다
     """
     pixel_means = np.mean(channel, axis=0)  # 각 열의 평균값 계산
     global_mean = np.mean(pixel_means)      # 전체 평균 계산
@@ -30,7 +30,7 @@ def calculate_fpn(channel):
 def calculate_temporal_noise(frames):
     """
     Temporal Noise 계산:
-    다중 프레임 데이터에서 시간에 따른 픽셀 값의 변동성을 계산합니다.
+    다중 프레임 데이터에서 시간에 따른 픽셀 값의 변동성을 계산한다
     """
     frame_means = np.mean(frames, axis=(1, 2))  # 각 프레임의 평균값 계산
     temporal_noise = np.sqrt(np.mean((frames - frame_means[:, None, None]) ** 2))  # 시간적 노이즈 계산
